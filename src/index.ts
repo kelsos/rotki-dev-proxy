@@ -12,21 +12,20 @@ const port = process.env.PORT || 4243;
 const backend = process.env.BACKEND || 'http://localhost:4242';
 const componentsDir = process.env.PREMIUM_COMPONENT_DIR;
 
-if (!componentsDir) {
-  console.error('PREMIUM_COMPONENT_DIR environment variable was not set');
-  process.exit(1);
-}
+enableCors(server);
 
 if (
-  !fs.existsSync(componentsDir) ||
-  !fs.statSync(componentsDir).isDirectory()
+  componentsDir &&
+  fs.existsSync(componentsDir) &&
+  fs.statSync(componentsDir).isDirectory()
 ) {
-  console.error('PREMIUM_COMPONENT_DIR has to be a directory');
-  process.exit(1);
+  console.info('Enabling statistics renderer support');
+  statistics(server, componentsDir);
+} else {
+  console.warn(
+    'PREMIUM_COMPONENT_DIR was not a valid directory, disabling statistics renderer support.'
+  );
 }
-
-enableCors(server);
-statistics(server, componentsDir);
 
 server.use(createProxyMiddleware({ target: backend }));
 server.use(middlewares);
