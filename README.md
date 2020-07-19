@@ -1,5 +1,7 @@
 # Rotki development proxy
 
+> This tool has already being merged upstream to the rotki repo, and any changes will happen there.
+
 The proxy's purpose is to provide an easy way to develop the frontend in parallel
 with the backend, and provide an easy way to test the premium features.
 
